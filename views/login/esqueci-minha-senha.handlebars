@@ -1,0 +1,29 @@
+<link rel="stylesheet" href="/css/login/signin.css">
+
+{{#each errors}}
+<div class="alert alert-danger">
+    {{message}}
+</div>
+
+{{/each}}
+<div class="container-signin">
+    <div class="text-center">
+        <h1 class="h3 mb-2 font-weight-normal">Recuperar sua senha </h1>
+        <form action="/login/trocar-senha" method="post" class="form-signin">
+            <div class="form-group row">
+                <label for="token">Token: </label>
+                <input type="text" name="token" class="form-control" placeholder="Token" required autofocus>
+            </div>
+            <div class="form-group row">
+                <label for="senha">Senha: </label>
+                <input type="password" name="senha" class="form-control" placeholder="Senha" required>
+            </div>
+            <div class="form-group row">
+                <label for="senha">Confirma Senha: </label>
+                <input type="password" name="senha1" class="form-control" placeholder="Confirmar Senha" required>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block mt-4" type="submit">Trocar minha Senha</button>
+        </form>
+        <p class="mt-5 mb-3 text-muted">&copy; 2020 UFMS.</p>
+    </div>
+</div>

@@ -1,0 +1,33 @@
+<h1>Relação de atividades complementares</h1>
+<hr>
+
+<a href="/aluno/atividades/cadastrar" class="btn btn-link">Criar nova atividade complementar</a>
+<br>
+
+<table class="table table-hover" style="width: 100%">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Tipo de Atividade</th>
+            <th scope="col">Atividade</th>
+            <th scope="col">Periodo</th>
+            <th scope="col">CH Total</th>
+            <th scope="col">CH Aproveitada</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each atividade}}
+        <tr>
+            <th scope="row">{{cod_atividade}}</th>
+            <td>{{nome_tipo_atividade}}</td>
+            <td>{{nome_atividade}}</td>
+            <td>{{data_inicio}} - {{data_fim}}</td>
+            <td>{{carga_horaria_atividade}}</td>
+            <td>{{carga_horaria_aproveitada}}</td>
+            <td><a href="/aluno/atividades/exibir/{{cod_atividade}}">Ver detalhes</a>
+        </tr>
+        {{/each}}
+
+    </tbody>
+</table>

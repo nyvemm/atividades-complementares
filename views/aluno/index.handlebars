@@ -1,0 +1,24 @@
+<center>
+    <h1>Bem vindo: {{user.nome}} </h1>
+    <hr>
+    <p>Você cumpriu: {{aluno.horas_cumpridas}} hora(s)</p>
+    <div class="progress">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+            aria-valuenow="{{aluno.horas_cumpridas}}" aria-valuemin="0" aria-valuemax="102"
+            style="width: {{aluno.horas_cumpridas}}%"></div>
+    </div>
+    <br>
+</center>
+
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Info:</h5>
+        <p>Usuário: {{aluno.login}}</p>
+        <p>E-mail: {{aluno.email}}</p>
+        <p>Ano de Ingresso: {{aluno.ano_ingresso}}</p>
+        <p>Semestre: {{aluno.semestre}}</p>
+        <hr>
+        <p>Situacão: <b>{{aluno.situacao}}</b></p>
+    </div>
+</div>

@@ -1,0 +1,52 @@
+<link rel="stylesheet" href="/css/login/signin.css">
+
+{{#each errors}}
+<div class="alert alert-danger">
+    {{message}}
+</div>
+{{/each}}
+
+<div class="container-signin">
+    <div class="text-center">
+        <h1 class="h3 mb-2 font-weight-normal">Cadastro de Usuário</h1>
+        <form action="/login/registrar" method="post" class="form-signin">
+            <div class="form-group row">
+                <label for="login">Login: </label>
+                <input type="text" name="login" class="form-control" placeholder="Login" required autofocus>
+            </div>
+            <div class="form-group row">
+                <label for="senha">Senha: </label>
+                <input type="password" name="senha" class="form-control" placeholder="Senha" required>
+            </div>
+            <div class="form-group row">
+                <label for="senha1">Confirme sua senha: </label>
+                <input type="password" name="senha1" class="form-control" placeholder="Senha" required>
+            </div>
+            <hr>
+            <div class="form-group row">
+                <label for="nome">Nome: </label>
+                <input type="text" name="nome" class="form-control" placeholder="Nome" required>
+            </div>
+            <div class="form-group row">
+                <label for="email">E-mail: </label>
+                <input type="email" name="email" class="form-control" placeholder="E-mail" required>
+            </div>
+            <hr>
+            <div class="form-group row">
+                <label for="email">RGA: </label>
+                <input type="text" name="rga" class="form-control" placeholder="RGA" pattern='\d{4}.\d{4}.\d{3}-\d' required>
+            </div>
+            <div class="form-group row">
+                <label for="ano_ingresso">Ano Ingresso: </label>
+                <input type="number" name="ano_ingresso" class="form-control" placeholder="Ano de Ingresso" required min=1900 max=2100>
+            </div>
+             <div class="form-group row">
+                <label for="semestre">Semestre atual: </label>
+                <input type="number" name="semestre" class="form-control" placeholder="Semestre atual" required>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block mt-4" type="submit">Cadastrar</button>
+            <a href="/login" class="btn btn-lg btn-secondary btn-block mt-4">Voltar</a>
+        </form>
+        <p class="mt-5 mb-3 text-muted">&copy; 2020 UFMS.</p>
+    </div>
+</div>

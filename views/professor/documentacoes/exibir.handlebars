@@ -1,0 +1,70 @@
+<h1> Documentação: #{{documentacao.cod_documentacao}}</h1>
+<hr>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Info:</h5>
+        Aluno: <h6><a href='/professor/alunos/exibir/{{documentacao.rga_aluno}}'>{{documentacao.rga_aluno}}</a></h6>
+        Nome da Atividade: <h6><a href='/professor/atividades/exibir/{{documentacao.cod_atividade}}'>
+                {{documentacao.nome_atividade}}</a>
+        </h6>
+        Tipo da Atividade: <h6>{{documentacao.nome_tipo_atividade}}</h6>
+        Tipo de Participação: <h6>{{documentacao.nome_tipo_participacao}}</h6>
+
+        <hr>
+        Carga horária aproveitada da documentacao: <h6>{{documentacao.horas_aproveitadas}}</h6>
+        <hr>
+        <div class="card">
+            <div class="card-header">
+                Período de participação:
+            </div>
+            <div class="card-body">
+                Data Inicial: <h6>{{documentacao.data_inicio_participacao}}</h6>
+                Data Final: <h6>{{documentacao.data_fim_participacao}}</h6>
+            </div>
+        </div>
+        <hr>
+        <div class="card">
+            <div class="card-header">
+                Avaliação do professor:
+            </div>
+            <div class="card-body">
+                Situação atual: <h6> {{documentacao.situacao_documentacao}} </h6>
+                {{#if documentacao.professor_cpf}}
+                Última avaliação por: <h6> {{documentacao.professor_cpf}}</h6>
+                {{/if}}
+                <hr>
+                {{#if documentacao.modificar}}
+                <form action="/professor/documentacao/avalia/{{documentacao.cod_documentacao}}" method="post">
+                    <label for="observacoes">Observações:</label>
+                    <textarea name="observacoes" class="form-control">{{documentacao.observacoes}}</textarea>
+                    <input type="hidden" name="professor_cpf" value="{{professor.cpf_professor}}">
+                    <input type="hidden" name="situacao_documentacao" value="Aprovado">
+                    <br>
+                    <button onclick="document.getElementsByName('situacao_documentacao')[0].value='Aprovado'"
+                        type="submit" class="btn btn-success">Aprovar documentação</button>
+                    <button onclick="document.getElementsByName('situacao_documentacao')[0].value='Reprovado'"
+                        type="submit" class="btn btn-danger ml-4">Reprovar documentação</button>
+                </form>
+                {{else}}
+                <b>Este aluno já passou pela avaliação final.</b>
+                {{/if}}
+            </div>
+        </div>
+        <hr>
+        {{#if documentacao.anexo}}
+        <a class="btn btn-link" href="/professor/documentacoes/download/{{documentacao.cod_documentacao}}">
+            <img src="/img/paperclip.png" alt="Anexo" width=30 height=30>
+            Documentação
+        </a>
+        {{else}}
+        Não há documentação anexada.
+        {{/if}}
+
+    </div>
+</div>
+<center>
+    <a href="/professor/documentacoes" class="btn btn-primary mt-4" style="width: 100%;">Voltar</a>
+</center>
+
+<p class="mt-5 mb-3 text-muted" style="text-align: center">&copy; 2020 UFMS.</p>

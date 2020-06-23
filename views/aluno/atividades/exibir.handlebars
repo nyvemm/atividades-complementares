@@ -1,0 +1,73 @@
+<h1> Atividade: #{{atividade.cod_atividade}}</h1>
+<hr>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Info:</h5>
+        Nome da Atividade: <h6>{{atividade.nome_atividade}}</h6>
+        Tipo da atividade: <h6>{{atividade.nome_tipo_atividade}}</h6>
+        Nome da instituição: <h6>{{atividade.nome_instituicao}}</h6>
+        Coordenador da Atividade: <h6>{{atividade.coordenador_atividade}}</h6>
+
+        <hr>
+        Carga horária total da Atividade: <h6>{{atividade.carga_horaria_atividade}}</h6>
+        Carga horária aproveitada da atividade: <h6>{{atividade.carga_horaria_aproveitada}}</h6>
+
+        <hr>
+        <div class="card">
+            <div class="card-header">
+                Período:
+            </div>
+            <div class="card-body">
+                Data Inicial: <h6>{{atividade.data_inicio}}</h6>
+                Data Final: <h6>{{atividade.data_fim}}</h6>
+            </div>
+        </div>
+        <hr>
+        <div class="card">
+            <div class="card-header">
+                Observações:
+            </div>
+            <div class="card-body">
+                {{#if atividade.outras_informacoes}}
+                <h6>{{atividade.outras_informacoes}}</h6>
+                {{else}}
+                <h6>Não há observações.</h6>
+                {{/if}}
+            </div>
+        </div>
+        <br>
+        RGA do aluno associado: <h6>{{atividade.rga_aluno}}</h6>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Documentos submetidos:</h5>
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">Nome Atividade</th>
+                    <th scope="col">Nome Instituição</th>
+                    <th scope="col">Tipo de Participação</th>
+                    <th scope="col">Carga Horária</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each documento}}
+                <tr>
+                    <td>{{nome_atividade}}</td>
+                    <td>{{nome_instituicao}}</td>
+                    <td>{{nome_tipo_participacao}}</td>
+                    <td>{{horas_aproveitadas}}</td>
+                    <td><a href="/aluno/documentacoes/exibir/{{cod_documentacao}}">Ver detalhes</a></td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+    <center>
+        <a href="/aluno/atividades" class="btn btn-primary mt-4" style="width: 100%;">Voltar</a>
+    </center>
+
+    <p class="mt-5 mb-3 text-muted" style="text-align: center">&copy; 2020 UFMS.</p>

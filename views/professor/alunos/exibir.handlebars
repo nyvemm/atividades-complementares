@@ -1,0 +1,50 @@
+<h1> {{aluno.nome}}: </h1>
+<hr>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Info:</h5>
+        <p>Usuário: {{aluno.login}}</p>
+        <p>E-mail: {{aluno.email}}</p>
+        <p>Ano de Ingresso: {{aluno.ano_ingresso}}</p>
+        <p>Semestre: {{aluno.semestre}}</p>
+        <hr>
+        <p>Horas cumpridas: {{aluno.horas_cumpridas}}</p>
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                aria-valuenow="{{aluno.horas_cumpridas}}" aria-valuemin="0" aria-valuemax="102"
+                style="width: {{aluno.horas_cumpridas}}%"></div>
+        </div>
+        <br>
+        <p>Situacão: <b>{{aluno.situacao}}</b></p>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Documentos submetidos:</h5>
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">Nome Atividade</th>
+                    <th scope="col">Nome Instituição</th>
+                    <th scope="col">Tipo de Participação</th>
+                    <th scope="col">Carga Horária</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each documento}}
+                <tr>
+                    <th scope="row">{{nome_atividade}}</th>
+                    <td>{{nome_instituicao}}</td>
+                    <td>{{nome_tipo_participacao}}</td>
+                    <td>{{carga_horaria_atividade}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+    <center>
+        <a href="/professor/alunos" class="btn btn-primary mt-4" style="width: 100%;">Voltar</a>
+    </center>
+
+    <p class="mt-5 mb-3 text-muted" style="text-align: center">&copy; 2020 UFMS.</p>

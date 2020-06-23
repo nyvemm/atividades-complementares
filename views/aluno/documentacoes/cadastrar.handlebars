@@ -1,0 +1,83 @@
+<div class="container-signin" style="padding: 2em;">
+    <h1 class="h3 mb-2 font-weight-normal">Registro de Documentação</h1>
+    <hr>
+    <input type="hidden" id="tipo">
+    <form action="/aluno/documentacoes/cadastrar" method="post" class="form-signin" enctype="multipart/form-data">
+        <div class="form-group row">
+            <label for="tipo_participacao">Tipo de participação: </label>
+            <select name="tipo_participacao" id="tipo_participacao" class="form-control" disabled>
+                <option>Escolha a atividade complementar primeiro</option>
+            </select>
+        </div>
+
+        <div class="form-group row">
+            <label for="data_inicio">Data Inicial: </label>
+            <input type="date" id="data-inicio" name="data_inicio" class="form-control" required>
+        </div>
+
+        <div class="form-group row">
+            <label for="data_fim">Data Final: </label>
+            <input type="date" id="data-fim" name="data_fim" class="form-control" required>
+        </div>
+
+        <div class="form-group row">
+            <label for="atv_complementar_cod">Atividade complementar associada: <button type="button"
+                    class="btn btn-link" data-toggle="modal" data-target="#exampleModalLong">Ver atividades
+                    complementares disponíveis</button></label>
+            <input type="number" name="atv_complementar_cod" class="form-control" required readonly>
+        </div>
+
+        <div class="form-group row">
+            <label for="anexo">Anexo: </label>
+            <input type="file" name="anexo" class="form-control-file">
+        </div>
+
+        <hr>
+        <button class="btn btn-lg btn-primary btn-block mt-4" type="submit">Cadastrar</button>
+        <a href="/aluno/documentacoes" class="btn btn-lg btn-secondary btn-block mt-4">Cancelar</a>
+    </form>
+
+    <p class="mt-5 mb-3 text-muted" style="text-align: center">&copy; 2020 UFMS.</p>
+</div>
+
+<!------------------------------------------------------------->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Atividades complementares</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Tipo</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each atividade}}
+                        <tr>
+                            <th scope="row">{{cod_atividade}}</th>
+                            <td>{{nome_atividade}}</td>
+                            <td>{{nome_tipo_atividade}}</td>
+                            <td><button type="button"
+                                    onclick="setTipo('{{nome_tipo_atividade}}');document.getElementsByName('atv_complementar_cod')[0].value={{cod_atividade}};document.querySelector('#close').click();document.querySelector('#tipo').value='{{tipo}}'"
+                                    class="btn btn-primary btn-sm">Selecionar</button></td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button id="close" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+<div class="container-signin" style="padding: 2em;">
+    <h1 class="h3 mb-2 font-weight-normal">Cadastro de Aluno</h1>
+    <hr>
+    <form action="/dashboard/alunos/cadastrar" method="post" class="form-signin">
+        <div class="form-group row">
+            <label for="login">Nome: </label>
+            <input type="text" name="nome" class="form-control" placeholder="Nome" required autofocus>
+        </div>
+        <div class="form-group row">
+            <label for="rga">RGA: </label>
+            <input type="text" name="rga" class="form-control" placeholder="RGA" required>
+        </div>
+        <div class="form-group row">
+            <label for="email">E-mail: </label>
+            <input type="mail" name="email" class="form-control" placeholder="E-mail">
+        </div>
+        <button class="btn btn-lg btn-primary btn-block mt-4" type="submit">Cadastrar</button>
+         <a href="/dashboard/alunos" class="btn btn-lg btn-secondary btn-block mt-4">Cancelar</a>
+    </form>
+    <p class="mt-5 mb-3 text-muted" style="text-align: center">&copy; 2020 UFMS.</p>
+</div>

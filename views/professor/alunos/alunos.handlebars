@@ -1,0 +1,69 @@
+<h1>Relação de alunos</h1>
+<hr>
+<button class="btn btn-link" data-toggle="modal" data-target="#modalConfirm">Avaliar alunos</button>
+<br>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nome</th>
+            <th scope="col">RGA</th>
+            <th scope="col">Horas cumpridas</th>
+            <th scope="col">Ano de Ingresso</th>
+            <th scope="col">Situação</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each aluno}}
+        <tr>
+            <th scope="row"></th>
+            <td>{{nome}}</td>
+            <td>{{rga}}</td>
+            <td>{{horas_cumpridas}}</td>
+            <td>{{ano_ingresso}}</td>
+            <td>{{situacao}}</td>
+            <td><a href="/professor/alunos/exibir/{{rga}}">Ver detalhes</a>
+        </tr>
+        {{/each}}
+
+    </tbody>
+</table>
+
+<style>
+    body {
+        counter-reset: index;
+    }
+
+    th[scope=row]::before {
+        content: counter(index);
+        counter-increment: index;
+
+    }
+</style>
+
+<div class="modal fade" id="modalConfirm" tabindex="-1" role="dialog" aria-labelledby="modalConfirm" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirmação</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Essa ação irá avaliar automaticamente todos os alunos que ainda não foram aprovados e pode ser
+                    irreversível, deseja continuar?</p>
+                <input type="checkbox" id="confirm" onchange="document.querySelector('#btnConfirm').disabled = !document.querySelector('#btnConfirm').disabled">
+                <label for="confirm">Clique aqui para confirmar</label>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <button id="btnConfirm" class="btn btn-primary" onclick="javascript:window.location.href='/professor/alunos/avaliacao'"
+                    disabled>
+                    Avaliar alunos</button>
+            </div>
+        </div>
+    </div>
+</div>

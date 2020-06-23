@@ -1,0 +1,54 @@
+<h1> Documentação: #{{documentacao.cod_atividade}}</h1>
+<hr>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Info:</h5>
+        Nome da Atividade: <h6>{{documentacao.nome_atividade}}</h6>
+        Tipo da Atividade: <h6>{{documentacao.nome_tipo_atividade}}</h6>
+        Tipo de Participação: <h6>{{documentacao.nome_tipo_participacao}}</h6>
+
+        <hr>
+        Carga horária aproveitada da documentacao: <h6>{{documentacao.horas_aproveitadas}}</h6>
+        <hr>
+        <div class="card">
+            <div class="card-header">
+                Período de participação:
+            </div>
+            <div class="card-body">
+                Data Inicial: <h6>{{documentacao.data_inicio_participacao}}</h6>
+                Data Final: <h6>{{documentacao.data_fim_participacao}}</h6>
+            </div>
+        </div>
+        <hr>
+        <div class="card">
+            <div class="card-header">
+                Aprovação:
+            </div>
+            <div class="card-body">
+                Situação: <h6> {{documentacao.situacao_documentacao}} </h6>
+                Avaliado por: <h6>
+                    {{#if documentacao.professor_cpf}}{{documentacao.professor_cpf}}{{else}}Esta documentação ainda não
+                    foi avaliada.{{/if}}</h6>
+                <hr>
+                Observações: <br>
+                <h6>{{#if documentacao.observacoes}}{{documentacao.observacoes}}{{else}}Não há observações.{{/if}}</h6>
+            </div>
+        </div>
+        <hr>
+        {{#if documentacao.anexo}}
+        <a class="btn btn-link" href="/aluno/documentacoes/download/{{documentacao.cod_documentacao}}">
+            <img src="/img/paperclip.png" alt="Anexo" width=30 height=30>
+            Documentação
+        </a>
+        {{else}}
+        Não há documentação anexada.
+        {{/if}}
+
+    </div>
+</div>
+<center>
+    <a href="/aluno/documentacoes" class="btn btn-primary mt-4" style="width: 100%;">Voltar</a>
+</center>
+
+<p class="mt-5 mb-3 text-muted" style="text-align: center">&copy; 2020 UFMS.</p>

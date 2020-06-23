@@ -1,0 +1,52 @@
+<div class="container-signin" style="padding: 2em;">
+    <h1 class="h3 mb-2 font-weight-normal">Cadastro de Atividade Complementar</h1>
+    <hr>
+    <form action="/aluno/atividades/cadastrar" method="post" class="form-signin">
+        <div class="form-group row">
+            <label for="nome_atividade">Nome: </label>
+            <input type="text" name="nome_atividade" class="form-control" placeholder="Nome" required autofocus>
+        </div>
+        <div class="form-group row">
+            <label for="nome_instituicao">Nome da Instituição: </label>
+            <input type="text" name="nome_instituicao" class="form-control" placeholder="Nome da Instituição" required
+                autofocus>
+        </div>
+        <div class="form-group row">
+            <label for="coordenador_atividade">Coordenador da Atividade: </label>
+            <input type="text" name="coordenador_atividade" class="form-control" placeholder="Coordenador da Atividade"
+                required autofocus>
+        </div>
+        <input type="hidden" name="rga_aluno" value='{{aluno.rga}}'>
+        <div class="form-group row">
+            <label for="tipo_atividade">Tipo de Atividade: </label>
+            <select name="tipo_atividade" class="form-control">
+                {{#each atividade}}
+                <option value={{cod_tipo_atividade}}>{{nome_tipo_atividade}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <div class="form-group row">
+            <label for="carga_horaria_atividade">Carga Horária: </label>
+            <input type="number" name="carga_horaria_atividade" class="form-control" required min=1>
+        </div>
+
+        <div class="form-group row">
+            <label for="data_inicio">Data Inicial: </label>
+            <input type="date" id="data-inicio" name="data_inicio" class="form-control" required>
+        </div>
+
+        <div class="form-group row">
+            <label for="data_fim">Data Final: </label>
+            <input type="date" id="data-fim" name="data_fim" class="form-control" required>
+        </div>
+        
+        <div>
+            <label for="data_fim">Outras informações: </label>
+            <textarea name="outras_informacoes" class="form-control" cols="30" rows="10"></textarea>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block mt-4" type="submit">Cadastrar</button>
+        <a href="/aluno/atividades" class="btn btn-lg btn-secondary btn-block mt-4">Cancelar</a>
+    </form>
+
+    <p class="mt-5 mb-3 text-muted" style="text-align: center">&copy; 2020 UFMS.</p>
+</div>

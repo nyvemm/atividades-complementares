@@ -1,0 +1,29 @@
+<h1>Relação de documentações</h1>
+<hr>
+
+<a href="/aluno/documentacoes/cadastrar" class="btn btn-link">Registrar nova documentação</a>
+<br>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Atividade Complementar</th>
+            <th scope="col">Tipo de Participação</th>
+            <th scope="col">Horas Aproveitadas</th>
+            <th scope="col">Situação</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each documentacao}}
+        <tr>
+            <th scope="row">{{cod_documentacao}}</th>
+            <td>{{nome_atividade}}</td>
+            <td>{{nome_tipo_participacao}}</td>
+            <td>{{horas_aproveitadas}}</td>
+            <td>{{situacao_documentacao}}</td>
+            <td><a href="/aluno/documentacoes/exibir/{{cod_documentacao}}">Ver detalhes</a>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
