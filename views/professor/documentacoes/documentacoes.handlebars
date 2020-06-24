@@ -30,10 +30,12 @@
         <tr>
             <th scope="row">{{cod_documentacao}}</th>
             <td><a class="nolink" href="/professor/alunos/exibir/{{rga}}">{{nome}}</a></td>
-            <td><a class="nolink" href="/professor/atividades/exibir/{{atv_complementar_cod}}">{{nome_atividade}}</a></td>
+            <td><a class="nolink" href="/professor/atividades/exibir/{{atv_complementar_cod}}">{{nome_atividade}}</a>
+            </td>
             <td>{{nome_tipo_participacao}}</td>
             <td>{{horas_aproveitadas}}</td>
-            <td>{{situacao_documentacao}}</td>
+            <td class="text-{{#if vermelho}}danger{{/if}}{{#if verde}}success{{/if}}{{#if azul}}info{{/if}}">
+                {{situacao_documentacao}}</td>
             <td><a href="/professor/documentacoes/exibir/{{cod_documentacao}}">Ver detalhes</a>
         </tr>
         {{/each}}

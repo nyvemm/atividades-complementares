@@ -1,0 +1,69 @@
+<div class="input-group">
+    <div class="input-group-btn search-panel">
+        <form action="/professor/relatorios/documentacoes/pesquisar" method="get">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <span id="search_concept">Filtrar por</span> <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li class="list-group-item list-group-item-action"><a href="#cod_documentacao">Código</a></li>
+                <li class="list-group-item list-group-item-action"><a href="#nome_tipo_participacao">Tipo de Participação</a></li>
+                <li class="list-group-item list-group-item-action"><a href="#nome">Nome do Aluno</a></li>
+                <li class="list-group-item list-group-item-action"><a href="#professor_cpf">CPF do Professor</a></li>
+            </ul>
+
+    </div>
+    <input type="hidden" name="filter" value="cod_documentacao" id="search_param">
+    <input type="text" class="form-control" name="query" placeholder="Pesquisar...">
+    <span class="input-group-btn">
+        <button class="btn btn-default" type="submit">🔎</button>
+    </span>
+    </form>
+</div>
+
+<div class="btn-group btn-group-toggle mt-4" data-toggle="buttons">
+    <label class="btn btn-info active">
+        <input type="radio" name="options" id="option1" autocomplete="off" onchange="analise(11);"> Documentações não
+        avaliadas
+    </label>
+    <label class="btn btn-danger">
+        <input type="radio" name="options" id="option2" autocomplete="off" onchange="reprovado(11);"> Documentações
+        reprovadas
+    </label>
+    <label class="btn btn-success">
+        <input type="radio" name="options" id="option3" autocomplete="off" onchange="aprovado(11);"> Documentações
+        aprovadas
+    </label>
+    <label class="btn btn-secondary">
+        <input type="radio" name="options" id="option3" autocomplete="off" onchange="todos();" checked> Todos
+    </label>
+</div>
+
+<hr>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Aluno</th>
+            <th scope="col">Atividade Complementar</th>
+            <th scope="col">Tipo de Participação</th>
+            <th scope="col">Horas Aproveitadas</th>
+            <th scope="col">Situação</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each documentacao}}
+        <tr class="aluno-row">
+            <th scope="row">{{cod_documentacao}}</th>
+            <td><a class="nolink" href="/professor/alunos/exibir/{{rga}}">{{nome}}</a></td>
+            <td><a class="nolink" href="/professor/atividades/exibir/{{atv_complementar_cod}}">{{nome_atividade}}</a>
+            </td>
+            <td>{{nome_tipo_participacao}}</td>
+            <td>{{horas_aproveitadas}}</td>
+            <td class="text-{{#if vermelho}}danger{{/if}}{{#if verde}}success{{/if}}{{#if azul}}info{{/if}}">
+                {{situacao_documentacao}}</td>
+            <td><a href="/professor/documentacoes/exibir/{{cod_documentacao}}">Ver detalhes</a>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>

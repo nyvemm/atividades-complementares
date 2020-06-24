@@ -1,0 +1,52 @@
+<div class="input-group">
+    <div class="input-group-btn search-panel">
+        <form action="/professor/relatorios/atividades/pesquisar" method="get">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <span id="search_concept">Filtrar por</span> <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li class="list-group-item list-group-item-action"><a href="#nome_atividade">Nome da Atividade</a></li>
+                <li class="list-group-item list-group-item-action"><a href="#nome_tipo_atividade">Tipo de Atividade</a></li>
+                <li class="list-group-item list-group-item-action"><a href="#rga_aluno">RGA do Aluno</a></li>
+                <li class="list-group-item list-group-item-action"><a href="#nome">Nome do Aluno</a></li>
+            </ul>
+    </div>
+    <input type="hidden" name="filter" value="nome_atividade" id="search_param">
+    <input type="text" class="form-control" name="query" placeholder="Pesquisar..." >
+    <span class="input-group-btn">
+        <button class="btn btn-default" type="submit">🔎</button>
+    </span>
+    </form>
+</div>
+
+
+<hr>
+<table class="table table-hover" style="width: 100%">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Aluno</th>
+            <th scope="col">Tipo de Atividade</th>
+            <th scope="col">Atividade</th>
+            <th scope="col">Periodo</th>
+            <th scope="col">CH Total</th>
+            <th scope="col">CH Aproveitada</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each atividade}}
+        <tr>
+            <th scope="row">{{cod_atividade}}</th>
+            <td><a class="nolink" href="/professor/alunos/exibir/{{rga}}">{{nome}}</a></td>
+            <td>{{nome_tipo_atividade}}</td>
+            <td>{{nome_atividade}}</td>
+            <td>{{data_inicio}} - {{data_fim}}</td>
+            <td>{{carga_horaria_atividade}}</td>
+            <td>{{carga_horaria_aproveitada}}</td>
+            <td><a href="/professor/atividades/exibir/{{cod_atividade}}">Ver detalhes</a>
+        </tr>
+        {{/each}}
+
+    </tbody>
+</table>

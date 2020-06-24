@@ -5,6 +5,7 @@ const passport = require("passport")
 const database = require("../config/database/knex")
 const multer = require("multer")
 const path = require("path")
+const pdf = require("html-pdf")
 
 //Configuração do Multer
 
@@ -214,5 +215,61 @@ router.get('/documentacoes/download/:cod', loginAluno, (req, res) => {
     })
 })
 
+router.get('/emitir/requirimento', loginAluno, (req, res) => {
+    database.select().from('aluno').innerJoin('usuario', 'usuario.login', 'aluno.login')
+        .where('aluno.login', req.user.login).then((data) => {
+            data[0].dia = new Date().getDate();
+            var mes = new Date().getMonth();
+
+            if (mes == 0)
+                data[0].mes = 'Janeiro'
+            else if (mes == 1)
+                data[0].mes = 'Fevereiro'
+            else if (mes == 2)
+                data[0].mes = 'Março'
+            else if (mes == 3)
+                data[0].mes = 'Abril'
+            else if (mes == 4)
+                data[0].mes = 'Maio'
+            else if (mes == 5)
+                data[0].mes = 'Junho'
+            else if (mes == 6)
+                data[0].mes = 'Julho'
+            else if (mes == 7)
+                data[0].mes = 'Agosto'
+            else if (mes == 8)
+                data[0].mes = 'Setembro'
+            else if (mes == 9)
+                data[0].mes = 'Outubro'
+            else if (mes == 10)
+                data[0].mes = 'Novembro'
+            else if (mes == 111)
+                data[0].mes = 'Dezembro'
+
+            data[0].ano = new Date().getFullYear();
+            res.render('pdf/pdf_requerimento', {
+                aluno: data[0],
+                pdf: true
+            }, (pdf_err, html) => {
+                var options = {
+                    format: 'A4',
+                    orientation: 'portrait',
+                    margin: '1cm'
+                };
+                res.send(html)
+                // pdf.create(html, options).toFile('./batata.pdf', (err, pdf_res) => {
+                //     if (err) {
+                //         req.flash("error_msg", "Falha ao gerar PDF")
+                //         res.redirect("/aluno")
+
+                //     } else {
+                //         req.flash("success_msg", "PDF gerado com sucesso")
+                //         res.download('./batata.pdf')
+                //     }
+                // })
+            })
+        })
+
+})
 //------------------------------------------------------------
 module.exports = router

@@ -23,7 +23,8 @@
             <td>{{rga}}</td>
             <td>{{horas_cumpridas}}</td>
             <td>{{ano_ingresso}}</td>
-            <td>{{situacao}}</td>
+            <td class="text-{{#if vermelho}}danger{{/if}}{{#if verde}}success{{/if}}{{#if azul}}info{{/if}}">
+                {{situacao}}</td>
             <td><a href="/professor/alunos/exibir/{{rga}}">Ver detalhes</a>
         </tr>
         {{/each}}
@@ -55,13 +56,14 @@
             <div class="modal-body">
                 <p>Essa ação irá avaliar automaticamente todos os alunos que ainda não foram aprovados e pode ser
                     irreversível, deseja continuar?</p>
-                <input type="checkbox" id="confirm" onchange="document.querySelector('#btnConfirm').disabled = !document.querySelector('#btnConfirm').disabled">
+                <input type="checkbox" id="confirm"
+                    onchange="document.querySelector('#btnConfirm').disabled = !document.querySelector('#btnConfirm').disabled">
                 <label for="confirm">Clique aqui para confirmar</label>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                <button id="btnConfirm" class="btn btn-primary" onclick="javascript:window.location.href='/professor/alunos/avaliacao'"
-                    disabled>
+                <button id="btnConfirm" class="btn btn-primary"
+                    onclick="javascript:window.location.href='/professor/alunos/avaliacao'" disabled>
                     Avaliar alunos</button>
             </div>
         </div>

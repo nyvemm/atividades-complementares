@@ -29,7 +29,16 @@ router.get("/", loginProfessor, (req, res) => {
 
 router.get("/alunos", loginProfessor, (req, res) => {
     database.select().from('aluno').innerJoin('usuario', 'aluno.login',
-        'usuario.login').then((alunos) => {
+        'usuario.login').orderBy('dt_cadastro', 'DESC').then((alunos) => {
+        alunos.forEach((aluno) => {
+            if (aluno.situacao == 'Matriculado') {
+                aluno.azul = true
+            } else if (aluno.situacao == 'Aprovado') {
+                aluno.verde = true
+            } else {
+                aluno.vermelho = true
+            }
+        })
         res.render("professor/alunos/alunos", {
             aluno: alunos
         })
@@ -129,6 +138,15 @@ router.get("/documentacoes", loginProfessor, (req, res) => {
             'documentacao.tipo_participacao').innerJoin('aluno', 'aluno.rga',
             'atividade_complementar.rga_aluno').innerJoin('usuario',
             'usuario.login', 'aluno.login').then((data) => {
+            data.forEach((documento) => {
+                if (documento.situacao_documentacao == 'Aprovado') {
+                    documento.verde = true
+                } else if (documento.situacao_documentacao == 'Reprovado') {
+                    documento.vermelho = true
+                } else {
+                    documento.azul = true
+                }
+            })
             res.render("professor/documentacoes/documentacoes", {
                 documentacao: data
             })
@@ -198,5 +216,189 @@ router.get('/alunos/avaliacao', loginProfessor, (req, res) => {
     })
 })
 
+//------------------------------------------------------------
+
+router.get('/relatorios', loginProfessor, (req, res) => {
+    res.render("professor/relatorios")
+})
+
+router.get('/relatorios/alunos', loginProfessor, (req, res) => {
+    database.select().from('aluno').innerJoin('usuario', 'aluno.login',
+        'usuario.login').then((alunos) => {
+        alunos.forEach((aluno) => {
+            if (aluno.situacao == 'Matriculado') {
+                aluno.azul = true
+            } else if (aluno.situacao == 'Aprovado') {
+                aluno.verde = true
+            } else {
+                aluno.vermelho = true
+            }
+        })
+        res.render("professor/relatorios/aluno", {
+            aluno: alunos
+        })
+    }).catch((err) => {
+        console.log(err)
+        req.flash("Erro interno")
+        res.redirect("/professor")
+    })
+})
+
+router.get("/relatorios/alunos/pesquisar", loginProfessor, (req, res) => {
+    if (req.query.filter == 'semestre' || req.query.filter == 'ano_ingresso') {
+        database.select().from('aluno').innerJoin('usuario', 'usuario.login', 'aluno.login')
+            .where(req.query.filter, parseInt(req.query.query)).then((alunos) => {
+                alunos.forEach((aluno) => {
+                    if (aluno.situacao == 'Matriculado') {
+                        aluno.azul = true
+                    } else if (aluno.situacao == 'Aprovado') {
+                        aluno.verde = true
+                    } else {
+                        aluno.vermelho = true
+                    }
+                })
+                res.render("professor/relatorios/aluno", {
+                    aluno: alunos
+                })
+            }).catch((err) => {
+                console.log(err)
+                req.flash("error_msg", "Falha ao pesquisar dados")
+                res.redirect("/professor/relatorios/alunos")
+            })
+    } else {
+        database.select().from('aluno').innerJoin('usuario', 'usuario.login', 'aluno.login')
+            .whereRaw("POSITION(? IN ??)<>0", [req.query.query, req.query.filter]).then((alunos) => {
+                alunos.forEach((aluno) => {
+                    if (aluno.situacao == 'Matriculado') {
+                        aluno.azul = true
+                    } else if (aluno.situacao == 'Aprovado') {
+                        aluno.verde = true
+                    } else {
+                        aluno.vermelho = true
+                    }
+                })
+                res.render("professor/relatorios/aluno", {
+                    aluno: alunos
+                })
+            }).catch((err) => {
+                console.log(err)
+                req.flash("error_msg", "Falha ao pesquisar dados")
+                res.redirect("/professor/relatorios/alunos")
+            })
+    }
+})
+
+
+router.get("/relatorios/atividades/", loginProfessor, (req, res) => {
+    database.select().from('atividade_complementar').innerJoin('tipo_atividade',
+            'tipo_atividade.cod_tipo_atividade', 'atividade_complementar.tipo_atividade')
+        .innerJoin('aluno', 'aluno.rga', 'atividade_complementar.rga_aluno')
+        .innerJoin('usuario', 'usuario.login', 'aluno.login').orderBy('cod_atividade', 'desc')
+        .then((atividades) => {
+            atividades.forEach((atividade) => {
+                atividade.data_inicio = atividade.data_inicio.getDate() + "/" + (parseInt(atividade.data_inicio.getMonth()) + 1) + "/" + atividade.data_inicio.getFullYear()
+                atividade.data_fim = atividade.data_fim.getDate() + "/" + (parseInt(atividade.data_fim.getMonth()) + 1) + "/" + atividade.data_fim.getFullYear()
+            })
+            res.render("professor/relatorios/atividade", {
+                atividade: atividades
+            })
+        })
+})
+
+router.get("/relatorios/atividades/pesquisar", loginProfessor, (req, res) => {
+    database.select().from('atividade_complementar').innerJoin('tipo_atividade',
+            'tipo_atividade.cod_tipo_atividade', 'atividade_complementar.tipo_atividade')
+        .innerJoin('aluno', 'aluno.rga', 'atividade_complementar.rga_aluno')
+        .innerJoin('usuario', 'usuario.login', 'aluno.login')
+        .whereRaw("POSITION(? IN ??)<>0", [req.query.query, req.query.filter]).then((atividades) => {
+            atividades.forEach((atividade) => {
+                atividade.data_inicio = atividade.data_inicio.getDate() + "/" + (parseInt(atividade.data_inicio.getMonth()) + 1) + "/" + atividade.data_inicio.getFullYear()
+                atividade.data_fim = atividade.data_fim.getDate() + "/" + (parseInt(atividade.data_fim.getMonth()) + 1) + "/" + atividade.data_fim.getFullYear()
+            })
+            res.render("professor/relatorios/atividade", {
+                atividade: atividades
+            })
+        }).catch((err) => {
+            req.flash("error_msg", "Falha ao pesquisar dados")
+            res.redirect("/professor/relatorios/alunos")
+        })
+})
+
+router.get("/relatorios/documentacoes", loginProfessor, (req, res) => {
+    database.select().from('documentacao').innerJoin('atividade_complementar',
+            'atividade_complementar.cod_atividade', 'documentacao.atv_complementar_cod')
+        .innerJoin('tipo_participacao', 'tipo_participacao.cod_tipo_participacao',
+            'documentacao.tipo_participacao').innerJoin('aluno', 'aluno.rga',
+            'atividade_complementar.rga_aluno').innerJoin('usuario',
+            'usuario.login', 'aluno.login').then((data) => {
+            data.forEach((documento) => {
+                if (documento.situacao_documentacao == 'Aprovado') {
+                    documento.verde = true
+                } else if (documento.situacao_documentacao == 'Reprovado') {
+                    documento.vermelho = true
+                } else {
+                    documento.azul = true
+                }
+            })
+            res.render("professor/relatorios/documentacao", {
+                documentacao: data
+            })
+        })
+})
+
+router.get('/relatorios/documentacoes/pesquisar', loginProfessor, (req, res) => {
+    if (req.query.filter == 'cod_documentacao') {
+        console.log(req.query)
+        console.log(parseInt(req.query.query))
+        console.log('-------------------')
+        database.select().from('documentacao').innerJoin('atividade_complementar',
+                'atividade_complementar.cod_atividade', 'documentacao.atv_complementar_cod')
+            .innerJoin('tipo_participacao', 'tipo_participacao.cod_tipo_participacao',
+                'documentacao.tipo_participacao').innerJoin('aluno', 'aluno.rga',
+                'atividade_complementar.rga_aluno').innerJoin('usuario',
+                'usuario.login', 'aluno.login').where(req.query.filter, parseInt(req.query.query)).then((data) => {
+                data.forEach((documento) => {
+                    if (documento.situacao_documentacao == 'Aprovado') {
+                        documento.verde = true
+                    } else if (documento.situacao_documentacao == 'Reprovado') {
+                        documento.vermelho = true
+                    } else {
+                        documento.azul = true
+                    }
+                })
+                res.render("professor/relatorios/documentacao", {
+                    documentacao: data
+                })
+            }).catch((err) => {
+                console.log(err)
+                req.flash("error_msg", "Falha ao pesquisar dados")
+                res.redirect("/professor/relatorios/documentacoes")
+            })
+    } else {
+        database.select().from('documentacao').innerJoin('atividade_complementar',
+                'atividade_complementar.cod_atividade', 'documentacao.atv_complementar_cod')
+            .innerJoin('tipo_participacao', 'tipo_participacao.cod_tipo_participacao',
+                'documentacao.tipo_participacao').innerJoin('aluno', 'aluno.rga',
+                'atividade_complementar.rga_aluno').innerJoin('usuario',
+                'usuario.login', 'aluno.login').whereRaw("POSITION(? IN ??)<>0", [req.query.query, req.query.filter]).then((data) => {
+                data.forEach((documento) => {
+                    if (documento.situacao_documentacao == 'Aprovado') {
+                        documento.verde = true
+                    } else if (documento.situacao_documentacao == 'Reprovado') {
+                        documento.vermelho = true
+                    } else {
+                        documento.azul = true
+                    }
+                })
+                res.render("professor/relatorios/documentacao", {
+                    documentacao: data
+                })
+            }).catch((err) => {
+                console.log(err)
+                req.flash("error_msg", "Falha ao pesquisar dados")
+                res.redirect("/professor/relatorios/documentacoes")
+            })
+    }
+})
 //------------------------------------------------------------
 module.exports = router
