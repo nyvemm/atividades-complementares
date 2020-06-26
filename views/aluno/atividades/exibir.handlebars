@@ -36,8 +36,22 @@
                 {{/if}}
             </div>
         </div>
+        <hr>
+        <div class="card">
+            <div class="card-header">
+                Aprovação:
+            </div>
+            <div class="card-body">
+                Situação: <h6> {{atividade.situacao_atividade}} </h6>
+                Avaliado por: <h6>
+                    {{#if atividade.professor_cpf}}{{atividade.professor_cpf}}{{else}}Esta documentação ainda não
+                    foi avaliada.{{/if}}</h6>
+                <hr>
+                Observações: <br>
+                <h6>{{#if atividade.observacoes_atividade}}{{atividade.observacoes_atividade}}{{else}}Não há observações.{{/if}}</h6>
+            </div>
+        </div>
         <br>
-        RGA do aluno associado: <h6>{{atividade.rga_aluno}}</h6>
     </div>
 </div>
 <div class="card">

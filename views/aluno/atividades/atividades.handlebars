@@ -10,9 +10,9 @@
             <th scope="col">#</th>
             <th scope="col">Tipo de Atividade</th>
             <th scope="col">Atividade</th>
-            <th scope="col">Periodo</th>
             <th scope="col">CH Total</th>
             <th scope="col">CH Aproveitada</th>
+            <th scope="col">Situação</th>
             <th scope="col"></th>
         </tr>
     </thead>
@@ -22,9 +22,10 @@
             <th scope="row">{{cod_atividade}}</th>
             <td>{{nome_tipo_atividade}}</td>
             <td>{{nome_atividade}}</td>
-            <td>{{data_inicio}} - {{data_fim}}</td>
             <td>{{carga_horaria_atividade}}</td>
             <td>{{carga_horaria_aproveitada}}</td>
+            <td class="text-{{#if vermelho}}danger{{/if}}{{#if verde}}success{{/if}}{{#if azul}}info{{/if}}">
+                {{situacao_atividade}}</td>
             <td><a href="/aluno/atividades/exibir/{{cod_atividade}}">Ver detalhes</a>
         </tr>
         {{/each}}

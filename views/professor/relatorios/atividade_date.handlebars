@@ -1,23 +1,12 @@
-<div class="input-group">
-    <div class="input-group-btn search-panel">
-        <form action="/professor/relatorios/atividades/pesquisar" method="get">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                <span id="search_concept">Filtrar por</span> <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu">
-                <li class="list-group-item list-group-item-action"><a href="#nome_atividade">Nome da Atividade</a></li>
-                <li class="list-group-item list-group-item-action"><a href="#nome_tipo_atividade">Tipo de Atividade</a>
-                </li>
-                <li class="list-group-item list-group-item-action"><a href="#rga_aluno">RGA do Aluno</a></li>
-                <li class="list-group-item list-group-item-action"><a href="#nome">Nome do Aluno</a></li>
-            </ul>
+<div class="card">
+    <div class="card-body">
+        <h3 class="card-title">Período: </h3>
+        <form action="/professor/relatorios/atividade-data/pesquisar" method="GET">
+            <input type="date" name="data_inicial" class="form-control">
+            <input type="date" name="data_final" class="form-control mt-2">
+            <button type="submit" class="btn btn-primary btn-block mt-4">Pesquisar </button>
+        </form>
     </div>
-    <input type="hidden" name="filter" value="nome_atividade" id="search_param">
-    <input type="text" class="form-control" name="query" placeholder="Pesquisar...">
-    <span class="input-group-btn">
-        <button class="btn btn-default" type="submit">🔎</button>
-    </span>
-    </form>
 </div>
 
 <div class="btn-group btn-group-toggle mt-4" data-toggle="buttons">
@@ -30,7 +19,8 @@
         reprovadas
     </label>
     <label class="btn btn-success">
-        <input type="radio" name="options" id="option3" autocomplete="off" onchange="aprovado(13);"> Atividades aprovadas
+        <input type="radio" name="options" id="option3" autocomplete="off" onchange="aprovado(13);"> Atividades
+        aprovadas
     </label>
     <label class="btn btn-secondary">
         <input type="radio" name="options" id="option3" autocomplete="off" onchange="todos();" checked> Todos

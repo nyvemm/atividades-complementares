@@ -60,8 +60,13 @@ router.get("/atividades", loginAluno, (req, res) => {
                 'tipo_atividade.cod_tipo_atividade', 'atividade_complementar.tipo_atividade')
             .where('rga_aluno', aluno[0].rga).then((atividades) => {
                 atividades.forEach((atividade) => {
-                    atividade.data_inicio = atividade.data_inicio.getDate() + "/" + (parseInt(atividade.data_inicio.getMonth()) + 1) + "/" + atividade.data_inicio.getFullYear()
-                    atividade.data_fim = atividade.data_fim.getDate() + "/" + (parseInt(atividade.data_fim.getMonth())) + 1 + "/" + atividade.data_fim.getFullYear()
+                    if (atividade.situacao_atividade == 'Em análise') {
+                        atividade.azul = true
+                    } else if (atividade.situacao_atividade == 'Aprovado') {
+                        atividade.verde = true
+                    } else {
+                        atividade.vermelho = true
+                    }
                 })
                 res.render("aluno/atividades/atividades", {
                     atividade: atividades
@@ -141,6 +146,15 @@ router.get("/documentacoes", loginAluno, (req, res) => {
                 'atividade_complementar.cod_atividade', 'documentacao.atv_complementar_cod')
             .innerJoin('tipo_participacao', 'tipo_participacao.cod_tipo_participacao',
                 'documentacao.tipo_participacao').where('rga_aluno', aluno[0].rga).then((data) => {
+                data.forEach((documento) => {
+                    if (documento.situacao_documentacao == 'Em análise') {
+                        documento.azul = true
+                    } else if (documento.situacao_documentacao == 'Aprovado') {
+                        documento.verde = true
+                    } else {
+                        documento.vermelho = true
+                    }
+                })
                 res.render("aluno/documentacoes/documentacoes", {
                     documentacao: data
                 })

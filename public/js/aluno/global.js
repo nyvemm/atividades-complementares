@@ -11,6 +11,7 @@ $(document).ready(function (e) {
 function aprovado(n) {
     let alunos = document.querySelectorAll(".aluno-row");
     alunos.forEach((currentRow) => {
+        console.log(currentRow.childNodes)
         if ('Aprovado' == currentRow.childNodes[n].textContent.trim()) {
             currentRow.style.display = 'table-row';
         } else {

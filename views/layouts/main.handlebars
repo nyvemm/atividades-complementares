@@ -6,22 +6,25 @@
     <title>AGAC</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link  id="bootstrap-css" rel="stylesheet" href="/css/bootstrap/bootstrap.min.css">
+    <link id="bootstrap-css" rel="stylesheet" href="/css/bootstrap/bootstrap.min.css">
 </head>
 
 <body>
     {{>_navbar}}
-    {{>_exception}}
-    {{#if error}}
-    <div class="alert alert-danger">
-        {{error}}
-    </div>
-    {{/if}}
     {{#if user}}
-    {{>_dashnav}}
+    <div class="col-sm-2">
+        {{>_dashnav}}
+    </div>
+
     {{/if}}
-    <div class="container mt-4" style="float:left">
+    <div class="container col-sm-8" style="margin-top: 5em;padding-left:2vw">
         {{/unless}}
+        {{>_exception}}
+        {{#if error}}
+        <div class="alert alert-danger">
+            {{error}}
+        </div>
+        {{/if}}
         {{{body}}}
         {{#unless pdf}}
     </div>

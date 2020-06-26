@@ -97,6 +97,14 @@ router.get("/atividades", loginProfessor, (req, res) => {
             atividades.forEach((atividade) => {
                 atividade.data_inicio = atividade.data_inicio.getDate() + "/" + (parseInt(atividade.data_inicio.getMonth()) + 1) + "/" + atividade.data_inicio.getFullYear()
                 atividade.data_fim = atividade.data_fim.getDate() + "/" + (parseInt(atividade.data_fim.getMonth()) + 1) + "/" + atividade.data_fim.getFullYear()
+
+                if (atividade.situacao_atividade == 'Em análise') {
+                    atividade.azul = true
+                } else if (atividade.situacao_atividade == 'Aprovado') {
+                    atividade.verde = true
+                } else {
+                    atividade.vermelho = true
+                }
             })
             res.render("professor/atividades/atividades", {
                 atividade: atividades
@@ -123,11 +131,44 @@ router.get("/atividades/exibir/:cod", loginProfessor, (req, res) => {
                 'tipo_participacao.cod_tipo_participacao', 'documentacao.tipo_participacao').where({
                 cod_atividade: req.params.cod
             }).then((documentos) => {
-                res.render("professor/atividades/exibir", {
-                    atividade: atividades[0],
-                    documento: documentos
+                if (atividades[0].situacao == 'Matriculado') {
+                    atividades[0].modificar = true;
+                } else {
+                    atividades[0].modificar = null
+                }
+                database.select().from('professor').where('login', req.user.login).then((professor) => {
+                    res.render("professor/atividades/exibir", {
+                        atividade: atividades[0],
+                        documento: documentos,
+                        professor: professor[0]
+                    })
                 })
             })
+        })
+})
+
+
+router.post('/atividades/avalia/:cod', loginProfessor, (req, res) => {
+    database('atividade_complementar').where('cod_atividade', req.params.cod)
+        .update(req.body).then(() => {
+            req.flash("success_msg", "Atividade avaliado com sucesso")
+            res.redirect('/professor/atividades/')
+        }).catch((err) => {
+            console.log(err)
+            req.flash("Erro ao avaliar aluno")
+            res.redirect('/professor/atividades/exibir/' + req.params.cod)
+        })
+})
+
+router.post('/documentacoes/avalia/:cod', loginProfessor, (req, res) => {
+    database('documentacao').where('cod_documentacao', req.params.cod)
+        .update(req.body).then(() => {
+            req.flash("success_msg", "Documentação avaliado com sucesso")
+            res.redirect('/professor/documentacoes/')
+        }).catch((err) => {
+            console.log(err)
+            req.flash("Erro ao avaliar aluno")
+            res.redirect('/professor/documentacoes/exibir/' + req.params.cod)
         })
 })
 
@@ -190,18 +231,6 @@ router.get('/documentacoes/download/:cod', loginProfessor, (req, res) => {
     })
 })
 
-router.post('/documentacao/avalia/:cod', loginProfessor, (req, res) => {
-    console.log(req.body)
-    database('documentacao').where('cod_documentacao', req.params.cod)
-        .update(req.body).then(() => {
-            req.flash("success_msg", "Aluno avaliado com sucesso")
-            res.redirect('/professor/documentacoes/exibir/' + req.params.cod)
-        }).catch((err) => {
-            console.log(err)
-            req.flash("Erro ao avaliar aluno")
-            res.redirect('/professor/documentacoes/exibir/' + req.params.cod)
-        })
-})
 
 //------------------------------------------------------------
 
@@ -211,7 +240,7 @@ router.get('/alunos/avaliacao', loginProfessor, (req, res) => {
         res.redirect("/professor/alunos")
     }).catch((err) => {
         console.log(err)
-        req.flash("error_msg", "Falha ao atualiazr alunos")
+        req.flash("error_msg", "Falha ao avaliar alunos")
         res.redirect("/professor/alunos")
     })
 })
@@ -298,6 +327,14 @@ router.get("/relatorios/atividades/", loginProfessor, (req, res) => {
             atividades.forEach((atividade) => {
                 atividade.data_inicio = atividade.data_inicio.getDate() + "/" + (parseInt(atividade.data_inicio.getMonth()) + 1) + "/" + atividade.data_inicio.getFullYear()
                 atividade.data_fim = atividade.data_fim.getDate() + "/" + (parseInt(atividade.data_fim.getMonth()) + 1) + "/" + atividade.data_fim.getFullYear()
+
+                if (atividade.situacao_atividade == 'Em análise') {
+                    atividade.azul = true
+                } else if (atividade.situacao_atividade == 'Aprovado') {
+                    atividade.verde = true
+                } else {
+                    atividade.vermelho = true
+                }
             })
             res.render("professor/relatorios/atividade", {
                 atividade: atividades
@@ -314,6 +351,14 @@ router.get("/relatorios/atividades/pesquisar", loginProfessor, (req, res) => {
             atividades.forEach((atividade) => {
                 atividade.data_inicio = atividade.data_inicio.getDate() + "/" + (parseInt(atividade.data_inicio.getMonth()) + 1) + "/" + atividade.data_inicio.getFullYear()
                 atividade.data_fim = atividade.data_fim.getDate() + "/" + (parseInt(atividade.data_fim.getMonth()) + 1) + "/" + atividade.data_fim.getFullYear()
+
+                if (atividade.situacao_atividade == 'Em análise') {
+                    atividade.azul = true
+                } else if (atividade.situacao_atividade == 'Aprovado') {
+                    atividade.verde = true
+                } else {
+                    atividade.vermelho = true
+                }
             })
             res.render("professor/relatorios/atividade", {
                 atividade: atividades
@@ -399,6 +444,108 @@ router.get('/relatorios/documentacoes/pesquisar', loginProfessor, (req, res) => 
                 res.redirect("/professor/relatorios/documentacoes")
             })
     }
+})
+
+router.get('/relatorios/aluno_semestre/', loginProfessor, (req, res) => {
+    database.select().from('aluno').innerJoin('usuario', 'aluno.login',
+        'usuario.login').whereRaw('CEIL(EXTRACT(MONTH FROM dt_cadastro)/ 6)+1 =\
+        CEIL(EXTRACT(MONTH FROM CURRENT_DATE) / 6) + 1 ').then((alunos) => {
+        alunos.forEach((aluno) => {
+            if (aluno.situacao == 'Matriculado') {
+                aluno.azul = true
+            } else if (aluno.situacao == 'Aprovado') {
+                aluno.verde = true
+            } else {
+                aluno.vermelho = true
+            }
+        })
+        res.render("professor/relatorios/aluno_filter", {
+            aluno: alunos
+        })
+    }).catch((err) => {
+        console.log(err)
+        req.flash("error_msg", "Falha ao pesquisar dados")
+        res.redirect("/professor/relatorios")
+    })
+})
+
+router.get('/relatorios/aluno_ano/', loginProfessor, (req, res) => {
+    database.select().from('aluno').innerJoin('usuario', 'aluno.login',
+        'usuario.login').whereRaw('EXTRACT(YEAR FROM dt_cadastro) = \
+        EXTRACT(YEAR FROM CURRENT_DATE)').then((alunos) => {
+        alunos.forEach((aluno) => {
+            if (aluno.situacao == 'Matriculado') {
+                aluno.azul = true
+            } else if (aluno.situacao == 'Aprovado') {
+                aluno.verde = true
+            } else {
+                aluno.vermelho = true
+            }
+        })
+        res.render("professor/relatorios/aluno_filter", {
+            aluno: alunos
+        })
+    }).catch((err) => {
+        console.log(err)
+        req.flash("error_msg", "Falha ao pesquisar dados")
+        res.redirect("/professor/relatorios")
+    })
+})
+
+router.get('/relatorios/atividade_data/', loginProfessor, (req, res) => {
+    database.select().from('atividade_complementar').innerJoin('tipo_atividade',
+            'tipo_atividade.cod_tipo_atividade', 'atividade_complementar.tipo_atividade')
+        .innerJoin('aluno', 'aluno.rga', 'atividade_complementar.rga_aluno')
+        .innerJoin('usuario', 'usuario.login', 'aluno.login')
+        .then((atividades) => {
+            atividades.forEach((atividade) => {
+                atividade.data_inicio = atividade.data_inicio.getDate() + "/" + (parseInt(atividade.data_inicio.getMonth()) + 1) + "/" + atividade.data_inicio.getFullYear()
+                atividade.data_fim = atividade.data_fim.getDate() + "/" + (parseInt(atividade.data_fim.getMonth()) + 1) + "/" + atividade.data_fim.getFullYear()
+
+                if (atividade.situacao_atividade == 'Em análise') {
+                    atividade.azul = true
+                } else if (atividade.situacao_atividade == 'Aprovado') {
+                    atividade.verde = true
+                } else {
+                    atividade.vermelho = true
+                }
+            })
+            res.render("professor/relatorios/atividade_date", {
+                atividade: atividades
+            })
+        }).catch((err) => {
+            req.flash("error_msg", "Falha ao pesquisar dados")
+            res.redirect("/professor/relatorios/")
+        })
+})
+
+router.get("/relatorios/atividade-data/pesquisar", loginProfessor, (req, res) => {
+    database.select().from('atividade_complementar').innerJoin('tipo_atividade',
+            'tipo_atividade.cod_tipo_atividade', 'atividade_complementar.tipo_atividade')
+        .innerJoin('aluno', 'aluno.rga', 'atividade_complementar.rga_aluno')
+        .innerJoin('usuario', 'usuario.login', 'aluno.login')
+        .whereRaw('data_inicio BETWEEN ? AND ?', [req.query.data_inicial, req.query.data_final])
+        .then((atividades) => {
+            atividades.forEach((atividade) => {
+                atividade.data_inicio = atividade.data_inicio.getDate() + "/" + (parseInt(atividade.data_inicio.getMonth()) + 1) + "/" + atividade.data_inicio.getFullYear()
+                atividade.data_fim = atividade.data_fim.getDate() + "/" + (parseInt(atividade.data_fim.getMonth()) + 1) + "/" + atividade.data_fim.getFullYear()
+
+                if (atividade.situacao_atividade == 'Em análise') {
+                    atividade.azul = true
+                } else if (atividade.situacao_atividade == 'Aprovado') {
+                    atividade.verde = true
+                } else {
+                    atividade.vermelho = true
+                }
+            })
+            res.render("professor/relatorios/atividade_date", {
+                atividade: atividades
+            })
+        }).catch((err) => {
+            console.log(err)
+            req.flash("error_msg", "Falha ao pesquisar dados")
+            res.redirect("/professor/relatorios/")
+        })
 })
 //------------------------------------------------------------
 module.exports = router

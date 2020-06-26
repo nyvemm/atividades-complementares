@@ -36,6 +36,35 @@
                 {{/if}}
             </div>
         </div>
+        <hr>
+        <div class="card">
+            <div class="card-header">
+                Avaliação do professor:
+            </div>
+            <div class="card-body">
+                Situação atual: <h6> {{atividade.situacao_atividade}} </h6>
+                {{#if atividade.professor_cpf}}
+                Última avaliação por: <h6> {{atividade.professor_cpf}}</h6>
+                {{/if}}
+                <hr>
+                {{#if atividade.modificar}}
+                <form action="/professor/atividades/avalia/{{atividade.cod_atividade}}" method="post">
+                    <label for="observacoes_atividade">Observações:</label>
+                    <textarea name="observacoes_atividade" class="form-control">{{atividade.observacoes_atividade}}</textarea>
+                    <input type="hidden" name="professor_cpf" value="{{professor.cpf_professor}}">
+                    <input type="hidden" name="situacao_atividade" value="Aprovado">
+                    <br>
+                    <button onclick="document.getElementsByName('situacao_atividade')[0].value='Aprovado'"
+                        type="submit" class="btn btn-success">Aprovar documentação</button>
+                    <button onclick="document.getElementsByName('situacao_atividade')[0].value='Reprovado'"
+                        type="submit" class="btn btn-danger ml-4">Reprovar documentação</button>
+                </form>
+                {{else}}
+                <b>Este aluno já passou pela avaliação final.</b>
+                {{/if}}
+            </div>
+        </div>
+        <hr>
         <br>
         Nome do aluno associado: <h6><a href="/professor/alunos/exibir/{{atividade.rga}}">{{atividade.nome}}</a></h6>
     </div>

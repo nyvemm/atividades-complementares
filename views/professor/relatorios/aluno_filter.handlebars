@@ -1,0 +1,43 @@
+<div class="btn-group btn-group-toggle mt-4" data-toggle="buttons">
+    <label class="btn btn-info active">
+        <input type="radio" name="options" id="option1" autocomplete="off" onchange="matriculado(9);"> Alunos não
+        avaliados
+    </label>
+    <label class="btn btn-danger">
+        <input type="radio" name="options" id="option2" autocomplete="off" onchange="reprovado(9);"> Alunos reprovados
+    </label>
+    <label class="btn btn-success">
+        <input type="radio" name="options" id="option3" autocomplete="off" onchange="aprovado(9);"> Alunos aprovados
+    </label>
+    <label class="btn btn-secondary">
+        <input type="radio" name="options" id="option3" autocomplete="off" onchange="todos();" checked> Todos
+    </label>
+</div>
+
+<hr>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Nome</th>
+            <th scope="col">RGA</th>
+            <th scope="col">Horas cumpridas</th>
+            <th scope="col">Ano de Ingresso</th>
+            <th scope="col">Situação</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each aluno}}
+        <tr class="aluno-row">
+            <td>{{nome}}</td>
+            <td>{{rga}}</td>
+            <td>{{horas_cumpridas}}</td>
+            <td>{{ano_ingresso}}</td>
+            <td class="text-{{#if vermelho}}danger{{/if}}{{#if verde}}success{{/if}}{{#if azul}}info{{/if}}">
+                {{situacao}}</td>
+            <td><a href="/professor/alunos/exibir/{{rga}}">Ver detalhes</a>
+        </tr>
+        {{/each}}
+
+    </tbody>
+</table>

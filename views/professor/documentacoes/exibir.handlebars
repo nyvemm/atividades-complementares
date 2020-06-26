@@ -35,7 +35,7 @@
                 {{/if}}
                 <hr>
                 {{#if documentacao.modificar}}
-                <form action="/professor/documentacao/avalia/{{documentacao.cod_documentacao}}" method="post">
+                <form action="/professor/documentacoes/avalia/{{documentacao.cod_documentacao}}" method="post">
                     <label for="observacoes">Observações:</label>
                     <textarea name="observacoes" class="form-control">{{documentacao.observacoes}}</textarea>
                     <input type="hidden" name="professor_cpf" value="{{professor.cpf_professor}}">
